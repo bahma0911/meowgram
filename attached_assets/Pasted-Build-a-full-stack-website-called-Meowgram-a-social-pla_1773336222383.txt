@@ -1,0 +1,146 @@
+Build a full-stack website called **Meowgram**, a social platform for cat lovers where users can post pictures or videos of their cats and the community can rate them.
+
+Tech Stack:
+
+* Frontend: React (Vite)
+* Backend: Node.js with Express
+* Database: MongoDB
+* Image storage: Cloudinary (or a simple file upload if easier)
+* Styling: simple modern UI using CSS or Tailwind
+
+Core Concept:
+Meowgram is a cat-focused social platform similar to Instagram but only for cats. Users can upload cat photos or videos, and the community can rate them from 1 to 10. Top rated cats appear on a leaderboard.
+
+Authentication:
+
+* Users must create an account to interact.
+* Visitors can browse posts but cannot vote, like, comment, or upload.
+* Signup fields: username, email, password.
+* Login with email and password.
+* Use JWT authentication.
+
+Core Features (MVP):
+
+1. User Accounts
+
+* Signup
+* Login
+* Logout
+* Store users in database with hashed passwords
+
+2. Post Cat Photos/Videos
+
+* Logged-in users can upload a cat photo or short video
+* Add a caption
+* Post appears in the feed
+
+3. Feed Page
+
+* Homepage shows a scrollable feed of cat posts
+* Each post displays:
+
+  * cat image/video
+  * caption
+  * username
+  * average rating
+  * number of votes
+  * like button
+  * comment section
+
+4. Rating System
+
+* Users can rate a cat from 1 to 10
+* Each user can rate a post only once
+* Users cannot rate their own post
+* Store ratings in database
+* Display average rating on each post
+
+5. Likes
+
+* Logged-in users can like a post
+* One like per user per post
+
+6. Comments
+
+* Users can comment on posts
+* Show username and comment text
+* Display comments below the post
+
+7. Weekly Leaderboard
+
+* Create a page showing top rated cats
+* Sort posts by average rating
+* Show top 10 cats
+
+Database Models:
+
+User
+
+* id
+* username
+* email
+* passwordHash
+* avatar
+* createdAt
+
+Post
+
+* id
+* userId
+* imageUrl
+* caption
+* createdAt
+
+Rating
+
+* id
+* postId
+* userId
+* score (1-10)
+
+Like
+
+* id
+* postId
+* userId
+
+Comment
+
+* id
+* postId
+* userId
+* text
+* createdAt
+
+Pages to Build:
+
+* Home Feed
+* Login
+* Signup
+* Upload Post
+* Post Detail Page
+* Leaderboard
+* User Profile
+
+UI Guidelines:
+
+* Clean modern design
+* Mobile friendly
+* Card layout for posts
+* Show rating prominently
+* Simple navigation bar with:
+
+  * Home
+  * Upload
+  * Leaderboard
+  * Profile
+  * Login/Logout
+
+Important Rules:
+
+* Visitors can view posts but must create an account to interact.
+* Each user can rate a post only once.
+* Prevent users from rating their own post.
+
+Goal:
+Generate a working MVP version of Meowgram with a basic but functional UI and working backend APIs.
