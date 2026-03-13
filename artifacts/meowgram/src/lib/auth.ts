@@ -1,18 +1,20 @@
+function navigate(url: string) {
+  try {
+    if (window.top && window.top !== window) {
+      window.top.location.href = url;
+      return;
+    }
+  } catch {
+    // window.top is cross-origin (e.g. Replit workspace) — fall through
+  }
+  window.location.href = url;
+}
+
 export function doLogin() {
   const base = (import.meta.env.BASE_URL ?? "/").replace(/\/+$/, "") || "/";
-  const url = `/api/login?returnTo=${encodeURIComponent(base)}`;
-  if (window.top && window.top !== window) {
-    window.top.location.href = url;
-  } else {
-    window.location.href = url;
-  }
+  navigate(`/api/login?returnTo=${encodeURIComponent(base)}`);
 }
 
 export function doLogout() {
-  const url = "/api/logout";
-  if (window.top && window.top !== window) {
-    window.top.location.href = url;
-  } else {
-    window.location.href = url;
-  }
+  navigate("/api/logout");
 }
