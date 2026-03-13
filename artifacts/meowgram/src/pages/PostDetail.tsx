@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useAuth } from "@workspace/replit-auth-web";
+import { doLogin } from "@/lib/auth";
 import { useGetPost, useGetComments } from "@workspace/api-client-react";
 import { useAddComment } from "@/hooks/use-comments";
 import { PostCard } from "@/components/post/PostCard";
@@ -15,7 +16,7 @@ export default function PostDetail() {
   const [, params] = useRoute("/post/:id");
   const postId = Number(params?.id);
   
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [commentText, setCommentText] = useState("");
 
   const { data: post, isLoading: postLoading, error: postError } = useGetPost(postId, { query: { enabled: !isNaN(postId) } });
@@ -110,7 +111,7 @@ export default function PostDetail() {
                 ) : (
                   <div className="bg-background border border-border p-4 rounded-2xl flex items-center justify-between shadow-sm">
                     <p className="text-muted-foreground text-sm font-medium">Log in to leave a comment.</p>
-                    <Button size="sm" onClick={() => login()} className="rounded-lg">Log In</Button>
+                    <Button size="sm" onClick={() => doLogin()} className="rounded-lg">Log In</Button>
                   </div>
                 )}
               </div>

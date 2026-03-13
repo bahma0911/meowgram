@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@workspace/replit-auth-web";
+import { doLogin } from "@/lib/auth";
 import { useCreatePost } from "@/hooks/use-posts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function Upload() {
   const [, setLocation] = useLocation();
-  const { isAuthenticated, isLoading: authLoading, login } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -40,7 +41,7 @@ export default function Upload() {
         <div className="bg-primary/10 p-6 rounded-full"><ImagePlus className="w-12 h-12 text-primary" /></div>
         <h2 className="text-2xl font-display font-bold">Log in to share</h2>
         <p className="text-muted-foreground max-w-md">You need an account to upload your cat photos and videos to Meowgram.</p>
-        <Button size="lg" onClick={() => login()} className="mt-4 rounded-xl">Log In</Button>
+        <Button size="lg" onClick={() => doLogin()} className="mt-4 rounded-xl">Log In</Button>
       </div>
     );
   }

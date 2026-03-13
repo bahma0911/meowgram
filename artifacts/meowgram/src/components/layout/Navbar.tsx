@@ -3,9 +3,10 @@ import { useAuth } from "@workspace/replit-auth-web";
 import { Button } from "@/components/ui/button";
 import { Cat, Home, Trophy, PlusSquare, LogIn, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { doLogin, doLogout } from "@/lib/auth";
 
 export function Navbar() {
-  const { user, isAuthenticated, login, logout } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const displayName = user
     ? [user.firstName, user.lastName].filter(Boolean).join(" ") || "User"
@@ -49,12 +50,12 @@ export function Navbar() {
                 </Avatar>
                 <span className="text-sm font-bold hidden md:block">{displayName}</span>
               </Link>
-              <Button variant="ghost" size="icon" onClick={() => logout()} title="Logout" className="text-muted-foreground hover:text-destructive">
+              <Button variant="ghost" size="icon" onClick={() => doLogout()} title="Logout" className="text-muted-foreground hover:text-destructive">
                 <LogOut className="w-4 h-4" />
               </Button>
             </>
           ) : (
-            <Button onClick={() => login()} className="rounded-full shadow-md shadow-primary/20 gap-2">
+            <Button onClick={() => doLogin()} className="rounded-full shadow-md shadow-primary/20 gap-2">
               <LogIn className="w-4 h-4" /> Log In
             </Button>
           )}

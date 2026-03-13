@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useAuth } from "@workspace/replit-auth-web";
 import { useGetPosts } from "@workspace/api-client-react";
+import { doLogin } from "@/lib/auth";
 import { PostCard } from "@/components/post/PostCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { Sparkles, TrendingUp, Clock, PlusSquare, Trophy } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [sort, setSort] = useState<"new" | "top" | "trending">("new");
   
   const { data, isLoading, error } = useGetPosts({ sort, limit: 20 });
@@ -41,7 +42,7 @@ export default function Home() {
                   </Button>
                 </Link>
               ) : (
-                <Button onClick={() => login()} className="w-full rounded-xl py-6 text-base font-bold shadow-lg shadow-primary/20">
+                <Button onClick={() => doLogin()} className="w-full rounded-xl py-6 text-base font-bold shadow-lg shadow-primary/20">
                   Join the Fun
                 </Button>
               )}
@@ -122,7 +123,7 @@ export default function Home() {
                 <div className="bg-primary/5 border border-primary/20 p-4 rounded-2xl mt-4">
                   <h4 className="font-bold text-primary text-sm mb-2">Want to vote?</h4>
                   <p className="text-xs text-muted-foreground mb-3">Log in to like, comment, and rate your favorite cats.</p>
-                  <Button size="sm" className="w-full rounded-lg" onClick={() => login()}>Log In Now</Button>
+                  <Button size="sm" className="w-full rounded-lg" onClick={() => doLogin()}>Log In Now</Button>
                 </div>
               )}
             </CardContent>

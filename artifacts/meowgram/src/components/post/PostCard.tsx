@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { motion } from "framer-motion";
 import { Heart, MessageCircle, MoreVertical, Trash2 } from "lucide-react";
 import { useAuth } from "@workspace/replit-auth-web";
+import { doLogin } from "@/lib/auth";
 import { Post } from "@workspace/api-client-react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,14 +13,14 @@ import { RatePopover } from "./RatePopover";
 import { useToggleLike, useDeletePost } from "@/hooks/use-posts";
 
 export function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
-  const { user, isAuthenticated, login } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { mutate: toggleLike, isPending: isLiking } = useToggleLike(post.id);
   const { mutate: deletePost } = useDeletePost();
 
   const isOwner = user?.id === post.userId;
 
   const handleLike = () => {
-    if (!isAuthenticated) return login();
+    if (!isAuthenticated) return doLogin();
     toggleLike({ postId: post.id });
   };
 
@@ -114,7 +115,7 @@ export function PostCard({ post, index = 0 }: { post: Post; index?: number }) {
                   currentRating={post.userRating} 
                   averageRating={post.averageRating}
                   isAuthenticated={isAuthenticated}
-                  onLoginRequest={login}
+                  onLoginRequest={doLogin}
                 />
               ) : (
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 rounded-full text-yellow-600 font-bold text-sm shadow-sm border border-yellow-100">
