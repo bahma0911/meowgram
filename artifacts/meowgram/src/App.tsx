@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -39,6 +40,14 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("auth_popup") === "1" && window.opener) {
+      window.opener.postMessage({ type: "meowgram-auth-complete" }, window.location.origin);
+      window.close();
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

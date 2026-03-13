@@ -188,11 +188,19 @@ router.get("/callback", async (req: Request, res: Response) => {
 });
 
 router.get("/logout", async (req: Request, res: Response) => {
-  const config = await getOidcConfig();
-  const origin = getOrigin(req);
-
   const sid = getSessionId(req);
   await clearSession(res, sid);
+
+  // If a popup-friendly returnTo is provided, skip the OIDC end-session
+  // redirect and go straight to the returnTo path (local logout only).
+  const returnTo = getSafeReturnTo(req.query.returnTo);
+  if (returnTo !== "/") {
+    res.redirect(returnTo);
+    return;
+  }
+
+  const config = await getOidcConfig();
+  const origin = getOrigin(req);
 
   const endSessionUrl = oidc.buildEndSessionUrl(config, {
     client_id: process.env.REPL_ID!,
