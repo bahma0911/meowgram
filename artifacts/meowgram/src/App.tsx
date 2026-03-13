@@ -42,8 +42,15 @@ function Router() {
 function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("auth_popup") === "1" && window.opener) {
-      window.opener.postMessage({ type: "meowgram-auth-complete" }, window.location.origin);
+    if (params.get("auth_popup") === "1") {
+      // Signal the opener via localStorage (works even if opener is cross-origin cleared)
+      localStorage.setItem("meowgram_auth_ts", Date.now().toString());
+      // Also try postMessage directly
+      try {
+        if (window.opener) {
+          window.opener.postMessage({ type: "meowgram-auth-complete" }, "*");
+        }
+      } catch {}
       window.close();
     }
   }, []);
