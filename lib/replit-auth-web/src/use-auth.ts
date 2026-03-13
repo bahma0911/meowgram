@@ -11,35 +11,38 @@ interface AuthState {
   logout: () => void;
 }
 
+async function fetchAuthUser(): Promise<AuthUser | null> {
+  const res = await fetch("/api/auth/user", { credentials: "include" });
+  if (!res.ok) return null;
+  const data = (await res.json()) as { user: AuthUser | null };
+  return data.user ?? null;
+}
+
 export function useAuth(): AuthState {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch("/api/auth/user", { credentials: "include" })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json() as Promise<{ user: AuthUser | null }>;
-      })
-      .then((data) => {
-        if (!cancelled) {
-          setUser(data.user ?? null);
-          setIsLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setUser(null);
-          setIsLoading(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
+  const refresh = useCallback(async () => {
+    try {
+      const u = await fetchAuthUser();
+      setUser(u);
+    } catch {
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  // Re-fetch when our popup auth flow signals completion
+  useEffect(() => {
+    function onAuthChanged() { refresh(); }
+    window.addEventListener("meowgram:auth-changed", onAuthChanged);
+    return () => window.removeEventListener("meowgram:auth-changed", onAuthChanged);
+  }, [refresh]);
 
   const login = useCallback(() => {
     const base = import.meta.env.BASE_URL.replace(/\/+$/, "") || "/";
