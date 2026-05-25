@@ -39,6 +39,6 @@ services:
 
 databases:
   - name: meowgram-db
-    engine: postgres
+    databaseEngine: postgres
     version: 15
     plan: free
