@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: meowgram-api
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: corepack enable && pnpm install && pnpm --filter @workspace/api-server run build
+    startCommand: node artifacts/api-server/dist/index.cjs
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: meowgram-db
+          property: connectionString
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
+  - type: static_site
+    name: meowgram-web
+    env: node
+    plan: free
+    rootDir: artifacts/meowgram
+    buildCommand: pnpm install --frozen-lockfile && VITE_API_URL=https://meowgram-api.onrender.com pnpm run build
+    staticPublishPath: dist/public
+    envVars:
+      - key: VITE_API_URL
+        value: https://meowgram-api.onrender.com
+
+databases:
+  - name: meowgram-db
+    engine: postgres
+    version: 15
+    plan: free

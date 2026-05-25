@@ -1,0 +1,21 @@
+packages:
+  "framer-motion": "For fluid page transitions, layout animations, and micro-interactions"
+  "@hookform/resolvers": "Zod validation for forms"
+  "date-fns": "For formatting human-readable relative dates (e.g. '2 hours ago')"
+  "react-hook-form": "For efficient, performant form state management"
+
+images:
+  - path: "artifacts/meowgram/public/images/cat-hero.png"
+    description: "A cute fluffy white and orange cat peeking over a soft pink banner, 3d minimalist illustration style, solid light pink background"
+    aspect_ratio: "16:9"
+  - path: "artifacts/meowgram/public/images/meowgram-logo.png"
+    description: "A simple, cute, minimal cat face outline logo in bright warm pink, flat vector style, transparent background"
+    aspect_ratio: "1:1"
+  - path: "artifacts/meowgram/public/images/empty-state.png"
+    description: "A sleepy cat curled up in a little ball, minimal 3d illustration, soft pink tones"
+    aspect_ratio: "1:1"
+
+notes:
+  - Auth uses @workspace/replit-auth-web for handling session redirects
+  - API mutations and queries use the generated hooks from @workspace/api-client-react
+  - CSS uses space-separated HSL values for the custom property theme
